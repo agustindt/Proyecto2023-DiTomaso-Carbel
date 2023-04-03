@@ -18,68 +18,91 @@ function dibujarEjes() {
 
 // Función para dibujar la grilla
 function dibujarGrilla() {
-  for (let i = 0; i <= 10; i++) {
+  for (let i = -25; i <= 25; i++) {
     ctx.beginPath();
-    ctx.moveTo(i * 50, 0);
-    ctx.lineTo(i * 50, 500);
+    ctx.moveTo(i * 20 + 250, 0);
+    ctx.lineTo(i * 20 + 250, 500);
     ctx.strokeStyle = "#ccc";
     ctx.stroke();
 
     ctx.beginPath();
-    ctx.moveTo(0, i * 50);
-    ctx.lineTo(500, i * 50);
+    ctx.moveTo(0, i * 20 + 250);
+    ctx.lineTo(500, i * 20 + 250);
     ctx.strokeStyle = "#ccc";
     ctx.stroke();
 
-    if (i !== 5) {
-      // Evitar escribir el número 0 dos veces
+    if (i !== 0) {
       ctx.fillStyle = "black";
-      ctx.fillText(i - 5, i * 50 + 5, 265);
-      ctx.fillText(5 - i, 255, i * 50 + 15);
+      ctx.fillText(i, i * 20 + 255, 265);
+      ctx.fillText(-i, 255, i * 20 + 255);
     }
   }
   ctx.fillStyle = "black";
   ctx.fillText("0", 255, 265);
 }
 
-// Función para evaluar f(x)
 function evaluarFuncion(x, funcion) {
-  console.log(x);
-  x = eval(x);
+  // Convertir x a un número
+  x = parseFloat(x);
 
+  // Reemplazar patrones como "2x", "3x", "0.5x", etc. por "2*x", "3*x", "0.5*x", etc.
+  x = x.toString().replaceAll(/(\d*\.?\d+)x/g, "$1*x");
+
+  // Reemplazar patrones como "ax^n" por "a*Math.pow(x, n)"
+  x = x.replaceAll(/(\d*\.?\d+)x\^(\d*\.?\d+)/g, "$1*Math.pow(x, $2)");
+
+  // Evaluar la función
+  let resultado = 0;
   switch (funcion) {
     case "sin":
-      return Math.sin(x);
+      resultado = Math.sin((x * Math.PI) / 180);
+      break;
     case "cos":
-      return Math.cos(x);
+      resultado = Math.cos((x * Math.PI) / 180);
+      break;
     case "tg":
-      return Math.tan(x);
+      resultado = Math.tan((x * Math.PI) / 180);
+      break;
     case "log":
-      return Math.log(x);
+      if (x <= 0) {
+        resultado = NaN;
+      } else {
+        resultado = Math.log(x) / Math.log(Math.E);
+      }
+      break;
+    case "ln":
+      if (x <= 0) {
+        resultado = NaN;
+      } else {
+        resultado = Math.log(x);
+      }
+      break;
     case "lineal":
-      return x;
+      resultado = x;
+      break;
     case "cuadratica":
-      console.log(x)
-      console.log(funcion)
-      return x; // Utiliza eval() para evaluar la función ingresada
+      resultado = x * x;
+      break;
     case "exponencial":
-      return Math.exp(x);
+      resultado = Math.exp(x);
+      break;
     case "hiperbolica":
-      return Math.sinh(x);
+      resultado = Math.sinh(x);
+      break;
     default:
-      return 0; // Devuelve 0 si la función ingresada no es válida
+      // Evaluar la expresión con math.js
+      resultado = math.evaluate(funcion, { x: x });
+      break;
   }
-}
 
-// Dibujar gráfica
+  return resultado;
+}
 function dibujarGrafica() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Dibujar ejes cartesianos y grilla
   dibujarEjes();
   dibujarGrilla();
 
-  // Obtener la función y el tipo seleccionados por el usuario
   const funcionInput = document.getElementById("funcion").value;
   const tipoInput = document.getElementById("tipo").value;
 
@@ -90,13 +113,13 @@ function dibujarGrafica() {
   let xAnterior = -10;
   let yAnterior = evaluarFuncion(xAnterior, tipoInput);
   for (let x = -9.9; x <= 10; x += 0.1) {
-    const y = evaluarFuncion(funcionInput.replaceAll("x", x), tipoInput);
-    ctx.moveTo(xAnterior * 50 + 250, -yAnterior * 50 + 250);
-    ctx.lineTo(x * 50 + 250, -y * 50 + 250);
-    ctx.stroke();
+    // Evaluar la función con math.js
+    const y = evaluarFuncion(resultado)
+    ctx.lineTo(x * 20 + 250, -y * 20 + 250);
     xAnterior = x;
     yAnterior = y;
   }
+  ctx.stroke();
 }
 
 document.getElementById("graficar").addEventListener("click", dibujarGrafica);
