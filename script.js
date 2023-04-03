@@ -113,9 +113,9 @@ function dibujarGrafica() {
   let xAnterior = -10;
   let yAnterior = evaluarFuncion(xAnterior, tipoInput);
   for (let x = -9.9; x <= 10; x += 0.1) {
-    // Evaluar la función con math.js
-    const y = evaluarFuncion(resultado)
-    ctx.lineTo(x * 20 + 250, -y * 20 + 250);
+    const y = evaluarFuncion(x, tipoInput);
+    ctx.lineTo(x * 20 + 250, Math.max(Math.min(-y * 20 + 250, 500), 0));
+
     xAnterior = x;
     yAnterior = y;
   }
