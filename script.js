@@ -41,7 +41,8 @@ function dibujarGrilla() {
   ctx.fillText("0", 255, 265);
 }
 
-function evaluarFuncion(x, funcion) {
+// Función para evaluar una función matemática en un valor dado de x
+function evaluarFuncion(x, tipo, funcion) {
   // Convertir x a un número
   x = parseFloat(x);
 
@@ -53,16 +54,13 @@ function evaluarFuncion(x, funcion) {
 
   // Evaluar la función
   let resultado = 0;
-  switch (funcion) {
+  switch (tipo) {
     case "sin":
-      resultado = Math.sin((x * Math.PI) / 180);
-      break;
+      return Math.sin(x);
     case "cos":
-      resultado = Math.cos((x * Math.PI) / 180);
-      break;
+      return Math.cos(x);
     case "tg":
-      resultado = Math.tan((x * Math.PI) / 180);
-      break;
+      return Math.tan(x);
     case "log":
       if (x <= 0) {
         resultado = NaN;
@@ -81,7 +79,7 @@ function evaluarFuncion(x, funcion) {
       resultado = x;
       break;
     case "cuadratica":
-      resultado = x * x;
+      resultado = x*x;
       break;
     case "exponencial":
       resultado = Math.exp(x);
@@ -91,7 +89,7 @@ function evaluarFuncion(x, funcion) {
       break;
     default:
       // Evaluar la expresión con math.js
-      resultado = math.evaluate(funcion, { x: x });
+      resultado = eval(funcion, { x: x });
       break;
   }
 
@@ -111,11 +109,14 @@ function dibujarGrafica() {
   ctx.strokeStyle = "red";
   ctx.lineWidth = 2;
   let xAnterior = -10;
-  let yAnterior = evaluarFuncion(xAnterior, tipoInput);
-  for (let x = -9.9; x <= 10; x += 0.1) {
-    const y = evaluarFuncion(x, tipoInput);
-    ctx.lineTo(x * 20 + 250, Math.max(Math.min(-y * 20 + 250, 500), 0));
+  let yAnterior = evaluarFuncion(xAnterior, tipoInput, funcionInput);
+  for (let x = -9.9; x <= 10; x += 0.01) {
+    // Evaluar la función con math.js
+    const y = evaluarFuncion(x,tipoInput);
 
+    ctx.moveTo(xAnterior * 50 + 250, -yAnterior * 50 + 250);
+    ctx.lineTo(x * 50 + 250, -y * 50 + 250);
+    ctx.stroke();
     xAnterior = x;
     yAnterior = y;
   }
