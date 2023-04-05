@@ -43,14 +43,14 @@ function dibujarGrilla() {
 
 // Función para evaluar una función matemática en un valor dado de x
 function evaluarFuncion(x, tipo, funcion) {
-  // Convertir x a un número
-  x = parseFloat(x);
+  
+  // Reemplazar patrones como "2x", "3x", "0.5x", etc. por "2*x", "3*x", "0.5*x", etc. //! Falta hacer lo mismo para xx(x^2)
+  funcion = funcion.toString().replace(/(\d*\.?\d+)x/g, "$1*x");
+  
 
-  // Reemplazar patrones como "2x", "3x", "0.5x", etc. por "2*x", "3*x", "0.5*x", etc.
-  x = x.toString().replaceAll(/(\d*\.?\d+)x/g, "$1*x");
 
-  // Reemplazar patrones como "ax^n" por "a*Math.pow(x, n)"
-  x = x.replaceAll(/(\d*\.?\d+)x\^(\d*\.?\d+)/g, "$1*Math.pow(x, $2)");
+  funcion = funcion.toString().replace('x', x);
+
 
   // Evaluar la función
   let resultado = 0;
@@ -76,10 +76,12 @@ function evaluarFuncion(x, tipo, funcion) {
       }
       break;
     case "lineal":
-      resultado = x;
+      funcion = eval(funcion);
+      resultado = funcion;
       break;
     case "cuadratica":
-      resultado = x*x;
+      funcion = eval(funcion);
+      resultado = funcion;
       break;
     case "exponencial":
       resultado = Math.exp(x);
@@ -112,7 +114,7 @@ function dibujarGrafica() {
   let yAnterior = evaluarFuncion(xAnterior, tipoInput, funcionInput);
   for (let x = -9.9; x <= 10; x += 0.01) {
     // Evaluar la función con math.js
-    const y = evaluarFuncion(x,tipoInput);
+    const y = evaluarFuncion(x,tipoInput,funcionInput);
 
     ctx.moveTo(xAnterior * 50 + 250, -yAnterior * 50 + 250);
     ctx.lineTo(x * 50 + 250, -y * 50 + 250);
