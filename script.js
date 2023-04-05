@@ -41,20 +41,18 @@ function dibujarGrilla() {
   ctx.fillText("0", 255, 265);
 }
 function evaluarFuncion(x, tipo, funcion) {
-
-  // Reemplazar patrones como "2x", "3x", "0.5x", etc. por "2*x", "3*x", "0.5*x", etc. //! Falta hacer lo mismo para xx(x^2)
-
-  
   // Reemplazar patrones como "2x^2", "3.5x^2", "0.5x^2", etc. por "2*(x**2)", "3.5*(x**2)", "0.5*(x**2)", etc.
   funcion = funcion.toString().replace(/(\d*\.?\d*)x\^2/g, "$1*(x**2)");
-  
+
   // Reemplazar patrones como "2x", "3x", "0.5x", etc. por "2*x", "3*x", "0.5*x", etc.
   funcion = funcion.toString().replace(/(\d*\.?\d+)x/g, "$1*x");
+
+  // Reemplazar patrones como "xx", "3xx", "0.5xx", etc. por "x*x", "3*x*x", "0.5*x*x", etc.
+  funcion = funcion.toString().replace(/(\d*\.?\d*)xx/g, "$1x*x");
   
-  // Evaluar la función
 
   console.log(funcion)
-  console.log(x)
+  // Evaluar la función
   let resultado = 0;
   switch (tipo) {
     case "sin":
@@ -62,7 +60,7 @@ function evaluarFuncion(x, tipo, funcion) {
       return resultado;
     case "cos":
       resultado = Math.cos(eval(funcion));
-      return resultado
+      return resultado;
     case "tg":
       resultado = Math.tan(eval(funcion));
       return resultado;
@@ -103,7 +101,6 @@ function evaluarFuncion(x, tipo, funcion) {
   }
 }
 
-
 function dibujarGrafica() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -121,7 +118,7 @@ function dibujarGrafica() {
   let yAnterior = evaluarFuncion(xAnterior, tipoInput, funcionInput);
   for (let x = -9.9; x <= 10; x += 0.01) {
     // Evaluar la función con math.js
-    const y = evaluarFuncion(x,tipoInput,funcionInput);
+    const y = evaluarFuncion(x, tipoInput, funcionInput);
 
     ctx.moveTo(xAnterior * 50 + 250, -yAnterior * 50 + 250);
     ctx.lineTo(x * 50 + 250, -y * 50 + 250);
