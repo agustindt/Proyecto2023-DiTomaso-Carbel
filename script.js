@@ -40,63 +40,72 @@ function dibujarGrilla() {
   ctx.fillStyle = "black";
   ctx.fillText("0", 255, 265);
 }
-
-// Función para evaluar una función matemática en un valor dado de x
 function evaluarFuncion(x, tipo, funcion) {
   
-  // Reemplazar patrones como "2x", "3x", "0.5x", etc. por "2*x", "3*x", "0.5*x", etc. //! Falta hacer lo mismo para xx(x^2)
-  funcion = funcion.toString().replace(/(\d*\.?\d+)x/g, "$1*x");
+  // Reemplazar patrones como "2x^2", "3.5x^2", "0.5x^2", etc. por "2*(x**2)", "3.5*(x**2)", "0.5*(x**2)", etc.
+  funcion = funcion.toString().replace(/(\d*\.?\d*)x\^2/g, "$1*(x**2)");
   
-
-
-  funcion = funcion.toString().replace('x', x);
-
+  // Reemplazar patrones como "2x", "3x", "0.5x", etc. por "2*x", "3*x", "0.5*x", etc.
+  funcion = funcion.toString().replace(/(\d*\.?\d*)x/g, "$1*x");
+  
+  // Reemplazar patrones como "a/x", "a^n/x", "a+b/x", "a-b/x", "a*b/x", "(a/b)/x", etc. por "a*(1/x)", "a^n*(1/x)", "(a+b)*(1/x)", "(a-b)*(1/x)", "(a*b)*(1/x)", "(a/b)*(1/x)", etc.
+  funcion = funcion.toString().replace(/([\d\.]*[a-z]?)[\+\-\*\/]([\d\.]*[a-z]?)\/x/gi, "($1*$2)/(x)");
+  funcion = funcion.toString().replace(/([\d\.]*[a-z]?)\/x/gi, "($1)/(x)");
+  funcion = funcion.toString().replace(/([\d\.]*[a-z]?)\^([\d\.]*[a-z]?)\/x/gi, "($1**$2)/(x)");
 
   // Evaluar la función
+
+  console.log(funcion)
+  console.log(x)
   let resultado = 0;
   switch (tipo) {
     case "sin":
-      return Math.sin(x);
+      resultado = Math.sin(eval(funcion));
+      return resultado;
     case "cos":
-      return Math.cos(x);
+      resultado = Math.cos(eval(funcion));
+      return resultado
     case "tg":
-      return Math.tan(x);
+      resultado = Math.tan(eval(funcion));
+      return resultado;
     case "log":
-      if (x <= 0) {
+      let log_x = eval(funcion);
+      if (log_x <= 0) {
         resultado = NaN;
+        return resultado;
       } else {
-        resultado = Math.log(x) / Math.log(Math.E);
+        resultado = Math.log(log_x) / Math.log(Math.E);
+        return resultado;
       }
-      break;
     case "ln":
-      if (x <= 0) {
+      let ln_x = eval(funcion);
+      if (ln_x <= 0) {
         resultado = NaN;
+        return resultado;
       } else {
-        resultado = Math.log(x);
+        resultado = Math.log(ln_x);
+        return resultado;
       }
-      break;
     case "lineal":
-      funcion = eval(funcion);
-      resultado = funcion;
-      break;
+      resultado = eval(funcion);
+      return resultado;
     case "cuadratica":
-      funcion = eval(funcion);
-      resultado = funcion;
-      break;
+      resultado = eval(funcion);
+      return resultado;
     case "exponencial":
-      resultado = Math.exp(x);
-      break;
+      resultado = Math.exp(eval(funcion));
+      return resultado;
     case "hiperbolica":
-      resultado = Math.sinh(x);
-      break;
+      resultado = Math.sinh(eval(funcion));
+      return resultado;
     default:
       // Evaluar la expresión con math.js
-      resultado = eval(funcion, { x: x });
-      break;
+      resultado = eval(funcion, { x: eval(funcion) });
+      return resultado;
   }
-
-  return resultado;
 }
+
+
 function dibujarGrafica() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
