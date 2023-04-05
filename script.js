@@ -41,18 +41,16 @@ function dibujarGrilla() {
   ctx.fillText("0", 255, 265);
 }
 function evaluarFuncion(x, tipo, funcion) {
+
+  // Reemplazar patrones como "2x", "3x", "0.5x", etc. por "2*x", "3*x", "0.5*x", etc. //! Falta hacer lo mismo para xx(x^2)
+
   
   // Reemplazar patrones como "2x^2", "3.5x^2", "0.5x^2", etc. por "2*(x**2)", "3.5*(x**2)", "0.5*(x**2)", etc.
   funcion = funcion.toString().replace(/(\d*\.?\d*)x\^2/g, "$1*(x**2)");
   
   // Reemplazar patrones como "2x", "3x", "0.5x", etc. por "2*x", "3*x", "0.5*x", etc.
-  funcion = funcion.toString().replace(/(\d*\.?\d*)x/g, "$1*x");
+  funcion = funcion.toString().replace(/(\d*\.?\d+)x/g, "$1*x");
   
-  // Reemplazar patrones como "a/x", "a^n/x", "a+b/x", "a-b/x", "a*b/x", "(a/b)/x", etc. por "a*(1/x)", "a^n*(1/x)", "(a+b)*(1/x)", "(a-b)*(1/x)", "(a*b)*(1/x)", "(a/b)*(1/x)", etc.
-  funcion = funcion.toString().replace(/([\d\.]*[a-z]?)[\+\-\*\/]([\d\.]*[a-z]?)\/x/gi, "($1*$2)/(x)");
-  funcion = funcion.toString().replace(/([\d\.]*[a-z]?)\/x/gi, "($1)/(x)");
-  funcion = funcion.toString().replace(/([\d\.]*[a-z]?)\^([\d\.]*[a-z]?)\/x/gi, "($1**$2)/(x)");
-
   // Evaluar la función
 
   console.log(funcion)
