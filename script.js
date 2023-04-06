@@ -1,57 +1,59 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
-// Dibujar ejes cartesianos y grilla
+//Dibujar ejes cartesianos y grilla
 dibujarEjes();
 dibujarGrilla();
 
 // Función para dibujar ejes cartesianos
 function dibujarEjes() {
   ctx.beginPath();
-  ctx.moveTo(250, 0);
-  ctx.lineTo(250, 500);
-  ctx.moveTo(0, 250);
-  ctx.lineTo(500, 250);
+  ctx.moveTo(400, 0); //donde empieza eje y
+  ctx.lineTo(400, 800); //donde termina eje y
+  ctx.moveTo(0, 400);
+  ctx.lineTo(800, 400);
   ctx.strokeStyle = "black";
   ctx.stroke();
 }
 
 // Función para dibujar la grilla
 function dibujarGrilla() {
-  for (let i = -25; i <= 25; i++) {
+  for (let i = -20; i <= 20; i++) {
     ctx.beginPath();
-    ctx.moveTo(i * 20 + 250, 0);
-    ctx.lineTo(i * 20 + 250, 500);
+    ctx.moveTo(i * 30 + 400, 0);
+    ctx.lineTo(i * 30 + 400, 800);
     ctx.strokeStyle = "#ccc";
     ctx.stroke();
 
     ctx.beginPath();
-    ctx.moveTo(0, i * 20 + 250);
-    ctx.lineTo(500, i * 20 + 250);
+    ctx.moveTo(0, i * 30 + 400);
+    ctx.lineTo(800, i * 30 + 400);
     ctx.strokeStyle = "#ccc";
     ctx.stroke();
 
-    if (i !== 0) {
+    if (i !== 0) { //dibuja la escala tanto de y como de x, pero no el 0
       ctx.fillStyle = "black";
-      ctx.fillText(i, i * 20 + 255, 265);
-      ctx.fillText(-i, 255, i * 20 + 255);
+      ctx.fillText(i, i * 30 + 396, 420);
+      ctx.fillText(-i, 410, i * 30 + 405);
     }
   }
   ctx.fillStyle = "black";
-  ctx.fillText("0", 255, 265);
+  ctx.fillText("0", 390, 420);
 }
+
+
+
 function evaluarFuncion(x, tipo, funcion) {
 
-  // Reemplazar patrones como "2x", "3x", "0.5x", etc. por "2*x", "3*x", "0.5*x", etc. //! Falta hacer lo mismo para xx(x^2)
+// Reemplazar patrones como "2x", "3x", "0.5x", etc. por "2*x", "3*x", "0.5*x", etc. //! Falta hacer lo mismo para xx(x^2)
 
-  
-  // Reemplazar patrones como "2x^2", "3.5x^2", "0.5x^2", etc. por "2*(x**2)", "3.5*(x**2)", "0.5*(x**2)", etc.
+// Reemplazar patrones como "2x^2", "3.5x^2", "0.5x^2", etc. por "2*(x**2)", "3.5*(x**2)", "0.5*(x**2)", etc.
   funcion = funcion.toString().replace(/(\d*\.?\d*)x\^2/g, "$1*(x**2)");
   
-  // Reemplazar patrones como "2x", "3x", "0.5x", etc. por "2*x", "3*x", "0.5*x", etc.
+// Reemplazar patrones como "2x", "3x", "0.5x", etc. por "2*x", "3*x", "0.5*x", etc.
   funcion = funcion.toString().replace(/(\d*\.?\d+)x/g, "$1*x");
   
-  // Evaluar la función
+// Evaluar la función
 
   console.log(funcion)
   console.log(x)
@@ -123,8 +125,8 @@ function dibujarGrafica() {
     // Evaluar la función con math.js
     const y = evaluarFuncion(x,tipoInput,funcionInput);
 
-    ctx.moveTo(xAnterior * 50 + 250, -yAnterior * 50 + 250);
-    ctx.lineTo(x * 50 + 250, -y * 50 + 250);
+    ctx.moveTo(xAnterior * 100 + 400, -yAnterior * 100 + 400);
+    ctx.lineTo(x * 100 + 400, -y * 100 + 400);
     ctx.stroke();
     xAnterior = x;
     yAnterior = y;
