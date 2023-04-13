@@ -5,107 +5,120 @@ const ctx = canvas.getContext("2d");
 dibujarEjes();
 dibujarGrilla();
 
-// Función para dibujar ejes cartesianos
-function dibujarEjes() {
+/**
+ * Dibuja los ejes cartesianos en el canvas.
+ * @param {string} [color="black"] - El color de los ejes.
+ * @returns {CanvasRenderingContext2D} El contexto del canvas.
+ */
+function dibujarEjes(color = "black") {
+  const ctx = canvas.getContext("2d");
   ctx.beginPath();
   ctx.moveTo(250, 0);
   ctx.lineTo(250, 500);
   ctx.moveTo(0, 250);
   ctx.lineTo(500, 250);
-  ctx.strokeStyle = "black";
+  ctx.strokeStyle = color;
   ctx.stroke();
+  return ctx;
 }
 
-// Función para dibujar la grilla
-function dibujarGrilla() {
+/**
+ * Dibuja una grilla en el canvas.
+ * @param {number} [espaciado=20] - El espaciado entre cada línea de la grilla.
+ * @param {string} [color="#ccc"] - El color de las líneas de la grilla.
+ * @returns {CanvasRenderingContext2D} El contexto del canvas.
+ */
+function dibujarGrilla(espaciado = 20, color = "#ccc") {
+  const ctx = canvas.getContext("2d");
   for (let i = -25; i <= 25; i++) {
     ctx.beginPath();
-    ctx.moveTo(i * 20 + 250, 0);
-    ctx.lineTo(i * 20 + 250, 500);
-    ctx.strokeStyle = "#ccc";
+    ctx.moveTo(i * espaciado + 250, 0);
+    ctx.lineTo(i * espaciado + 250, 500);
+    ctx.strokeStyle = color;
     ctx.stroke();
 
     ctx.beginPath();
-    ctx.moveTo(0, i * 20 + 250);
-    ctx.lineTo(500, i * 20 + 250);
-    ctx.strokeStyle = "#ccc";
+    ctx.moveTo(0, i * espaciado + 250);
+    ctx.lineTo(500, i * espaciado + 250);
+    ctx.strokeStyle = color;
     ctx.stroke();
 
     if (i !== 0) {
       ctx.fillStyle = "black";
-      ctx.fillText(i, i * 20 + 255, 265);
-      ctx.fillText(-i, 255, i * 20 + 255);
+      ctx.fillText(i, i * espaciado + 255, 265);
+      ctx.fillText(-i, 255, i * espaciado + 255);
     }
   }
   ctx.fillStyle = "black";
   ctx.fillText("0", 255, 265);
+  return ctx;
 }
+
+/**
+Evalúa una función matemática en un punto dado.
+@param {number} x - El punto en el que se evalúa la función.
+@param {string} tipo - El tipo de función ("sin", "cos", "tg", "log", "ln", "lineal", "cuadratica", "exponencial" o "hiperbolica").
+@param {string} funcion - La expresión matemática que se evaluará.
+@returns {number} resultado - El resultado de la evaluación.
+*/
 function evaluarFuncion(x, tipo, funcion) {
-  // Reemplazar patrones como "2x^2", "3.5x^2", "0.5x^2", etc. por "2*(x**2)", "3.5*(x**2)", "0.5*(x**2)", etc.
-  funcion = funcion.toString().replace(/(\d*\.?\d*)x\^2/g, "$1*(x**2)");
+  // Reemplazar patrones como "2x^2", "3.5x^2", "0.5x^2", etc. por "2(x2)", "3.5*(x2)", "0.5*(x2)", etc.
+  funcion = funcion.replace(/(\d*.?\d*)x^2/g, "$1*(x2)");
+  // Reemplazar patrones como "2x", "3x", "0.5x", etc. por "2x", "3x", "0.5x", etc.
+  funcion = funcion.replace(/(\d.?\d+)x/g, "$1*x");
 
-  // Reemplazar patrones como "2x", "3x", "0.5x", etc. por "2*x", "3*x", "0.5*x", etc.
-  funcion = funcion.toString().replace(/(\d*\.?\d+)x/g, "$1*x");
+  // Reemplazar patrones como "xx", "3xx", "0.5xx", etc. por "xx", "3xx", "0.5xx", etc.
+  funcion = funcion.replace(/(\d.?\d*)xx/g, "$1x*x");
 
-  // Reemplazar patrones como "xx", "3xx", "0.5xx", etc. por "x*x", "3*x*x", "0.5*x*x", etc.
-  funcion = funcion.toString().replace(/(\d*\.?\d*)xx/g, "$1x*x");
-  
-
-  console.log(funcion)
   // Evaluar la función
   let resultado = 0;
+
   switch (tipo) {
     case "sin":
-      resultado = Math.sin(eval(funcion));
-      return resultado;
+      resultado = Math.sin(math.evaluate(funcion, { x: x }));
+      break;
     case "cos":
-      resultado = Math.cos(eval(funcion));
-      return resultado;
+      resultado = Math.cos(math.evaluate(funcion, { x: x }));
+      break;
     case "tg":
-      resultado = Math.tan(eval(funcion));
-      return resultado;
+      resultado = Math.tan(math.evaluate(funcion, { x: x }));
+      break;
     case "log":
-      let log_x = eval(funcion);
+      let log_x = math.evaluate(funcion, { x: x });
       if (log_x <= 0) {
-        resultado = NaN;
-        return resultado;
-      } else {
-        resultado = Math.log(log_x) / Math.log(Math.E);
-        return resultado;
+        return NaN;
       }
+      resultado = Math.log(log_x) / Math.LN10;
+      break;
     case "ln":
-      let ln_x = eval(funcion);
+      let ln_x = math.evaluate(funcion, { x: x });
       if (ln_x <= 0) {
-        resultado = NaN;
-        return resultado;
-      } else {
-        resultado = Math.log(ln_x);
-        return resultado;
+        return NaN;
       }
+      resultado = Math.log(ln_x);
+      break;
     case "lineal":
-      resultado = eval(funcion);
-      return resultado;
     case "cuadratica":
-      resultado = eval(funcion);
-      return resultado;
     case "exponencial":
-      resultado = Math.exp(eval(funcion));
-      return resultado;
     case "hiperbolica":
-      resultado = Math.sinh(eval(funcion));
-      return resultado;
+      resultado = math.evaluate(funcion, { x: x });
+      break;
     default:
-      // Evaluar la expresión con math.js
-      resultado = eval(funcion, { x: eval(funcion) });
-      return resultado;
+      try {
+        resultado = math.evaluate(funcion, { x: x });
+      } catch (error) {
+        return NaN;
+      }
   }
+
+  return resultado;
 }
 
 function dibujarGrafica() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas before redrawing the graph
 
-  dibujarEjes();
   dibujarGrilla();
+  dibujarEjes();
 
   const funcionInput = document.getElementById("funcion").value;
   const tipoInput = document.getElementById("tipo").value;
