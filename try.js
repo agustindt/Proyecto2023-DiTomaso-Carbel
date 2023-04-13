@@ -1,4 +1,4 @@
-v = "2x";
+v = "sin(2x)";
 
 // v = v.toString().replace(/(\d*\.?\d+)x/g, "$1*x");
 v = v.replace(/(\d*\.?\d+)x\^(\d*\.?\d+)/g, "$1*Math.pow(x, $2)");

@@ -1,7 +1,7 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
-// Dibujar ejes cartesianos y grilla
+//Dibujar ejes cartesianos y grilla
 dibujarEjes();
 dibujarGrilla();
 
@@ -13,54 +13,42 @@ dibujarGrilla();
 function dibujarEjes(color = "black") {
   const ctx = canvas.getContext("2d");
   ctx.beginPath();
-  ctx.moveTo(250, 0);
-  ctx.lineTo(250, 500);
-  ctx.moveTo(0, 250);
-  ctx.lineTo(500, 250);
-  ctx.strokeStyle = color;
+  ctx.moveTo(400, 0); //donde empieza eje y
+  ctx.lineTo(400, 800); //donde termina eje y
+  ctx.moveTo(0, 400);
+  ctx.lineTo(800, 400);
+  ctx.strokeStyle = "black";
   ctx.stroke();
   return ctx;
 }
 
-/**
- * Dibuja una grilla en el canvas.
- * @param {number} [espaciado=20] - El espaciado entre cada línea de la grilla.
- * @param {string} [color="#ccc"] - El color de las líneas de la grilla.
- * @returns {CanvasRenderingContext2D} El contexto del canvas.
- */
-function dibujarGrilla(espaciado = 20, color = "#ccc") {
-  const ctx = canvas.getContext("2d");
-  for (let i = -25; i <= 25; i++) {
+// Función para dibujar la grilla
+function dibujarGrilla() {
+  for (let i = -20; i <= 20; i++) {
     ctx.beginPath();
-    ctx.moveTo(i * espaciado + 250, 0);
-    ctx.lineTo(i * espaciado + 250, 500);
-    ctx.strokeStyle = color;
+    ctx.moveTo(i * 30 + 400, 0);
+    ctx.lineTo(i * 30 + 400, 800);
+    ctx.strokeStyle = "#ccc";
     ctx.stroke();
 
     ctx.beginPath();
-    ctx.moveTo(0, i * espaciado + 250);
-    ctx.lineTo(500, i * espaciado + 250);
-    ctx.strokeStyle = color;
+    ctx.moveTo(0, i * 30 + 400);
+    ctx.lineTo(800, i * 30 + 400);
+    ctx.strokeStyle = "#ccc";
     ctx.stroke();
 
-    if (i !== 0) {
+    if (i !== 0) { //dibuja la escala tanto de y como de x, pero no el 0
       ctx.fillStyle = "black";
-      ctx.fillText(i, i * espaciado + 255, 265);
-      ctx.fillText(-i, 255, i * espaciado + 255);
+      ctx.fillText(i, i * 30 + 396, 420);
+      ctx.fillText(-i, 410, i * 30 + 405);
     }
   }
   ctx.fillStyle = "black";
-  ctx.fillText("0", 255, 265);
-  return ctx;
+  ctx.fillText("0", 390, 420);
 }
 
-/**
-Evalúa una función matemática en un punto dado.
-@param {number} x - El punto en el que se evalúa la función.
-@param {string} tipo - El tipo de función ("sin", "cos", "tg", "log", "ln", "lineal", "cuadratica", "exponencial" o "hiperbolica").
-@param {string} funcion - La expresión matemática que se evaluará.
-@returns {number} resultado - El resultado de la evaluación.
-*/
+
+
 function evaluarFuncion(x, tipo, funcion) {
   // Reemplazar patrones como "2x^2", "3.5x^2", "0.5x^2", etc. por "2(x2)", "3.5*(x2)", "0.5*(x2)", etc.
   funcion = funcion.replace(/(\d*.?\d*)x^2/g, "$1*(x2)");
@@ -133,8 +121,8 @@ function dibujarGrafica() {
     // Evaluar la función con math.js
     const y = evaluarFuncion(x, tipoInput, funcionInput);
 
-    ctx.moveTo(xAnterior * 50 + 250, -yAnterior * 50 + 250);
-    ctx.lineTo(x * 50 + 250, -y * 50 + 250);
+    ctx.moveTo(xAnterior * 100 + 400, -yAnterior * 100 + 400);
+    ctx.lineTo(x * 100 + 400, -y * 100 + 400);
     ctx.stroke();
     xAnterior = x;
     yAnterior = y;
