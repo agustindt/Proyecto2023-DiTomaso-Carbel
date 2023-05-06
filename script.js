@@ -1,17 +1,12 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
-//Dibujar ejes cartesianos y grilla
+// Dibujar ejes cartesianos y grilla
 dibujarEjes();
 dibujarGrilla();
 
-/**
- * Dibuja los ejes cartesianos en el canvas.
- * @param {string} [color="black"] - El color de los ejes.
- * @returns {CanvasRenderingContext2D} El contexto del canvas.
- */
-function dibujarEjes(color = "black") {
-  const ctx = canvas.getContext("2d");
+// Función para dibujar ejes cartesianos
+function dibujarEjes() {
   ctx.beginPath();
   ctx.moveTo(400, 0); //donde empieza eje y
   ctx.lineTo(400, 800); //donde termina eje y
@@ -19,12 +14,11 @@ function dibujarEjes(color = "black") {
   ctx.lineTo(800, 400);
   ctx.strokeStyle = "black";
   ctx.stroke();
-  return ctx;
 }
 
 // Función para dibujar la grilla
 function dibujarGrilla() {
-  for (let i = -20; i <= 20; i++) {
+  for (let i = -20; i <= 20; i += 5) {
     ctx.beginPath();
     ctx.moveTo(i * 30 + 400, 0);
     ctx.lineTo(i * 30 + 400, 800);
@@ -37,7 +31,8 @@ function dibujarGrilla() {
     ctx.strokeStyle = "#ccc";
     ctx.stroke();
 
-    if (i !== 0) { //dibuja la escala tanto de y como de x, pero no el 0
+    if (i !== 0) {
+      // dibuja la escala tanto de y como de x, pero no el 0
       ctx.fillStyle = "black";
       ctx.fillText(i, i * 30 + 396, 420);
       ctx.fillText(-i, 410, i * 30 + 405);
@@ -47,66 +42,74 @@ function dibujarGrilla() {
   ctx.fillText("0", 390, 420);
 }
 
-
-
-function evaluarFuncion(x, tipo, funcion) {
-  // Reemplazar patrones como "2x^2", "3.5x^2", "0.5x^2", etc. por "2(x2)", "3.5*(x2)", "0.5*(x2)", etc.
-  funcion = funcion.replace(/(\d*.?\d*)x^2/g, "$1*(x2)");
-  // Reemplazar patrones como "2x", "3x", "0.5x", etc. por "2x", "3x", "0.5x", etc.
+// Función para sustituir patrones de la función
+function sustituirPatrones(funcion) {
   funcion = funcion.replace(/(\d.?\d+)x/g, "$1*x");
-
-  // Reemplazar patrones como "xx", "3xx", "0.5xx", etc. por "xx", "3xx", "0.5xx", etc.
-  funcion = funcion.replace(/(\d.?\d*)xx/g, "$1x*x");
-
-  // Evaluar la función
-  let resultado = 0;
-
-  switch (tipo) {
-    case "sin":
-      resultado = Math.sin(math.evaluate(funcion, { x: x }));
-      break;
-    case "cos":
-      resultado = Math.cos(math.evaluate(funcion, { x: x }));
-      break;
-    case "tg":
-      resultado = Math.tan(math.evaluate(funcion, { x: x }));
-      break;
-    case "log":
-      let log_x = math.evaluate(funcion, { x: x });
-      if (log_x <= 0) {
-        return NaN;
-      }
-      resultado = Math.log(log_x) / Math.LN10;
-      break;
-    case "ln":
-      let ln_x = math.evaluate(funcion, { x: x });
-      if (ln_x <= 0) {
-        return NaN;
-      }
-      resultado = Math.log(ln_x);
-      break;
-    case "lineal":
-    case "cuadratica":
-    case "exponencial":
-    case "hiperbolica":
-      resultado = math.evaluate(funcion, { x: x });
-      break;
-    default:
-      try {
-        resultado = math.evaluate(funcion, { x: x });
-      } catch (error) {
-        return NaN;
-      }
-  }
-
-  return resultado;
+  funcion = funcion.toString().replace(/(\d*\.?\d*)x\^2/g, "$1*(x**2)");
+  funcion = funcion.toString().replace(/(\d*\.?\d+)x/g, "$1*x");
+  return funcion;
 }
 
-function dibujarGrafica() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas before redrawing the graph
+// Función para evaluar la función
+function evaluarFuncion(x, tipo, funcion) {
+  funcion = sustituirPatrones(funcion);
 
-  dibujarGrilla();
+  console.log(funcion);
+  console.log(x);
+  let resultado = 0;
+  switch (tipo) {
+    case "sin":
+      resultado = Math.sin(eval(funcion));
+      return resultado;
+    case "cos":
+      resultado = Math.cos(eval(funcion));
+      return resultado;
+    case "tg":
+      resultado = Math.tan(eval(funcion));
+      return resultado;
+    case "log":
+      let log_x = eval(funcion);
+      if (log_x <= 0) {
+        resultado = NaN;
+        return resultado;
+      } else {
+        resultado = Math.log(log_x) / Math.log(Math.E);
+        return resultado;
+      }
+    case "ln":
+      let ln_x = eval(funcion);
+      if (ln_x <= 0) {
+        resultado = NaN;
+        return resultado;
+      } else {
+        resultado = Math.log(ln_x);
+        return resultado;
+      }
+    case "lineal":
+      resultado = eval(funcion);
+      return resultado;
+    case "cuadratica":
+      resultado = eval(funcion);
+      return resultado;
+    case "exponencial":
+      resultado = Math.exp(eval(funcion));
+      return resultado;
+    case "hiperbolica":
+      resultado = Math.sinh(eval(funcion));
+      return resultado;
+    default:
+      // Evaluar la expresión con math.js
+      resultado = eval(funcion, { x: eval(funcion) });
+      return resultado;
+  }
+}
+
+
+function dibujarGrafica() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
   dibujarEjes();
+  dibujarGrilla();
 
   const funcionInput = document.getElementById("funcion").value;
   const tipoInput = document.getElementById("tipo").value;
