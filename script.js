@@ -8,38 +8,38 @@ dibujarGrilla();
 // Función para dibujar ejes cartesianos
 function dibujarEjes() {
   ctx.beginPath();
-  ctx.moveTo(400, 0); //donde empieza eje y
-  ctx.lineTo(400, 800); //donde termina eje y
-  ctx.moveTo(0, 400);
-  ctx.lineTo(800, 400);
+  ctx.moveTo(canvas.width / 2, 0); //donde empieza eje y
+  ctx.lineTo(canvas.width / 2, canvas.height); //donde termina eje y
+  ctx.moveTo(0, canvas.height / 2);
+  ctx.lineTo(canvas.width, canvas.height / 2);
   ctx.strokeStyle = "black";
   ctx.stroke();
 }
 
 // Función para dibujar la grilla
 function dibujarGrilla() {
-  for (let i = -20; i <= 20; i += 5) {
+  for (let i = -20; i <= 20; i += 1) {
     ctx.beginPath();
-    ctx.moveTo(i * 30 + 400, 0);
-    ctx.lineTo(i * 30 + 400, 800);
+    ctx.moveTo(i * 30 + canvas.width / 2, 0);
+    ctx.lineTo(i * 30 + canvas.width / 2, canvas.height);
     ctx.strokeStyle = "#ccc";
     ctx.stroke();
 
     ctx.beginPath();
-    ctx.moveTo(0, i * 30 + 400);
-    ctx.lineTo(800, i * 30 + 400);
+    ctx.moveTo(0, i * 30 + canvas.height / 2);
+    ctx.lineTo(canvas.width, i * 30 + canvas.height / 2);
     ctx.strokeStyle = "#ccc";
     ctx.stroke();
 
     if (i !== 0) {
       // dibuja la escala tanto de y como de x, pero no el 0
       ctx.fillStyle = "black";
-      ctx.fillText(i, i * 30 + 396, 420);
-      ctx.fillText(-i, 410, i * 30 + 405);
+      ctx.fillText(i, i * 30 + canvas.width / 2 - 4, canvas.height / 2 + 12);
+      ctx.fillText(-i, canvas.width / 2 + 4, i * 30 + canvas.height / 2 + 6);
     }
   }
   ctx.fillStyle = "black";
-  ctx.fillText("0", 390, 420);
+  ctx.fillText("0", canvas.width / 2 - 4, canvas.height / 2 + 12);
 }
 
 // Función para sustituir patrones de la función

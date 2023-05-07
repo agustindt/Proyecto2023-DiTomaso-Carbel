@@ -1,20 +1,23 @@
 /* Estilos generales */
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500&display=swap");
 
-
 body {
   background-color: #F0F6F9;
+}
+#containerId {
+  width: auto;
 }
 
 .container {
   margin-top: 30px;
   margin-bottom: 30px;
   border: 1px solid #ddd;
-  width: auto !important; /*Borrar esto */
+  width: 100%;
   padding: 20px;
   background-color: #F0f6f9;
   box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.2);
 }
+
 .title {
   margin-bottom: 20px;
   text-align: center;
@@ -25,7 +28,7 @@ body {
   margin-bottom: 10px;
 }
 
-.descripcion{
+.description {
   color: #394648;
 }
 
@@ -33,21 +36,25 @@ body {
   padding-bottom: 10px;
 }
 
-
 .funcion-title {
   color: #394648;
   display: inline-block;
   width: 60px;
   margin-right: 10px;
+  margin-bottom: 5px; 
 }
-.funciontype-title{
+
+.funciontype-title {
   color: #394648;
+  margin-bottom: 5px; 
 }
 
 .funcion-input,
 .funciontype-form {
   width: calc(100% - 70px);
+  margin-bottom: 10px; 
 }
+
 .button-container {
   display: flex;
   justify-content: center;
@@ -63,11 +70,11 @@ body {
   margin-bottom: 10px;
 }
 
-/* Nuevos estilos */
 .col {
   display: flex;
-  flex-direction: column;
+  align-items: center;
 }
+
 
 .row {
   display: flex;
@@ -91,12 +98,11 @@ canvas {
 }
 
 @media (min-width: 768px) {
-  .col {
-    flex-direction: row;
-  }
-
   .col > * {
-    flex: 1;
-    margin: 0 5px;
+    margin-right: 10px;
   }
-}
+  
+  .col:last-child > * {
+    margin-right: 0;
+  }
+}  
