@@ -38,8 +38,8 @@ function dibujarGrilla() {
       ctx.fillText(-i, canvas.width / 2 + 4, i * 30 + canvas.height / 2 + 6);
     }
   }
-  ctx.fillStyle = "black";
-  ctx.fillText("0", canvas.width / 2 - 4, canvas.height / 2 + 12);
+  ctx.fillStyle = "red";
+  ctx.fillText("0", canvas.width / 2 - 8, canvas.height / 2 + 12);
 }
 
 // Función para sustituir patrones de la función
