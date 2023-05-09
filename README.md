@@ -6,7 +6,7 @@
 
 **Link de GH-Pages:**
 
-###**Tecnologias utilizadas:**
+##**Tecnologias utilizadas:**
 
   - HTML5
   
