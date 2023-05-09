@@ -1,6 +1,8 @@
 # Proyecto2023-DiTomaso-Carbel
 
-### **Alumnos:** Ditomaso Agustin, Carbel Matias
+### **Alumnos:** 
+
+Ditomaso Agustin, Carbel Matias
 
 **Tema:** Graficador de Funciones
 
