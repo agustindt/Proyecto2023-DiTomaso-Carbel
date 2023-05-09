@@ -7,7 +7,11 @@ Tema: Graficador de Funciones
 Link de GH-Pages:
 
 Tecnologias utilizadas:
+
   -HTML5
+  
   -CSS
+  
   -Bootstrap5
+  
   -Javascript
