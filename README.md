@@ -8,10 +8,10 @@ Link de GH-Pages:
 
 Tecnologias utilizadas:
 
-  -HTML5
+  - HTML5
   
-  -CSS
+  - CSS
   
-  -Bootstrap5
+  - Bootstrap5
   
-  -Javascript
+  - Javascript
