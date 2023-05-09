@@ -4,9 +4,11 @@
 
 Ditomaso Agustin, Carbel Matias
 
-**Tema:** Graficador de Funciones
+### **Tema:** 
 
-**Link de GH-Pages:**
+Graficador de Funciones
+
+### **Link de GH-Pages:**
 
 ## **Tecnologias utilizadas:**
 
