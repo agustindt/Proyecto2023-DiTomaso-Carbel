@@ -45,7 +45,7 @@ function dibujarGrilla() {
 // Función para sustituir patrones de la función
 function sustituirPatrones(funcion) {
   funcion = funcion.replace(/(\d.?\d+)x/g, "$1*x");
-  funcion = funcion.toString().replace(/(\d*\.?\d*)x\^2/g, "$1*(x**2)");
+  funcion = funcion.toString().replace(/(\d*\.?\d*)x\^2/g, "$1*(x^2)");
   funcion = funcion.toString().replace(/(\d*\.?\d+)x/g, "$1*x");
   return funcion;
 }
@@ -91,9 +91,7 @@ function evaluarFuncion(x, tipo, funcion) {
     case "cuadratica":
       resultado = eval(funcion);
       return resultado;
-    case "exponencial":
-      resultado = Math.exp(eval(funcion));
-      return resultado;
+
     case "hiperbolica":
       resultado = Math.sinh(eval(funcion));
       return resultado;
